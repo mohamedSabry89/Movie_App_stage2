@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">Search Movies</string>
+    <string name="popularity">Most Popular</string>
+    <string name="vote_average">highest Rated</string>
+    <string name="favorite">Favorites</string>
+    <string name="title">Movie Title</string>
+    <string name="date">Release date</string>
+    <string name="rating">rate</string>
+    <string name="overview">Overview</string>
+    <string name="review">Reviews</string>
+    <string name="trailer">Trailers</string>
+
+</resources>
