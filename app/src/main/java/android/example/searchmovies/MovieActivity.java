@@ -26,7 +26,7 @@ public class MovieActivity extends AppCompatActivity {
     AppDatabase appDatabase;
     Movie movie;
     String moviePoster, title, overView, rate, date;
-    int id = movie.getId();
+    int id, checking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,8 @@ public class MovieActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         movie = intent.getParcelableExtra("get_data");
-        int position = intent.getIntExtra("get_id", id);
+        // int checking = intent.getIntExtra("get_id", id);
+        // checking = appDatabase.movieDao().check();
 
         title = movie.getTitle();
         overView = movie.getOverview();
@@ -62,22 +63,33 @@ public class MovieActivity extends AppCompatActivity {
         movie = new Movie(moviePoster, title, overView, rate, date, id);
 
         button.setOnClickListener(new View.OnClickListener() {
-            
+            // boolean inFavourite = true;
+
             @Override
             public void onClick(View view) {
 
-                if () {
+                if (movie.getId()!=appDatabase.movieDao().check(id)) {
                     view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
-                    AppExecutors.getInstance().diskIO().execute(() -> {
-                        appDatabase.movieDao().insert(movie);
-                    });
-                } else if () {
+                    addToFavourite();
+                } else {
                     view.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.colorGrey));
-                    AppExecutors.getInstance().diskIO().execute(() -> {
-                        appDatabase.movieDao().delete(movie);
-                    });
+                    deleteFromFavourite();
                 }
             }
+        });
+    }
+
+    public void addToFavourite() {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            appDatabase.movieDao().insert(movie);
+
+        });
+    }
+
+    public void deleteFromFavourite() {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            appDatabase.movieDao().delete(movie);
+
         });
     }
 }

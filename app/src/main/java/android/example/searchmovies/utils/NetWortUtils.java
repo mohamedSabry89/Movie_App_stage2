@@ -13,7 +13,7 @@ public class NetWortUtils {
 
     final static String URL = "http://api.themoviedb.org/3/movie/";
     final static String PARAM_API_KEY = "api_key";
-    final static String api_key = "put your api_key";
+    final static String api_key = "";
     final static String PARAM_LANGUAGE = "language";
     final static String language = "en-US";
 

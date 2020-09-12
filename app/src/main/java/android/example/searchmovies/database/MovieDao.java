@@ -19,6 +19,9 @@ public interface MovieDao {
     @Update()
     void update(Movie m);
 
+    @Query("SELECT * FROM Movies_Table WHERE id = :id")
+    int check(int id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Movie m);
 

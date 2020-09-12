@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public ImageView imageView;
     public Context context;
     public MovieQueryTask task;
-    public String sortBy;
+    public String sortBy = "popular";
     //public LiveData<List<Movie>> listmovie;
 
     private ViewModel viewModel;
@@ -150,13 +150,13 @@ public class MainActivity extends AppCompatActivity {
     }*/
 
     public void getFavorites() {
-        viewModel = ViewModelProviders.of(this).get(ViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ViewModel.class);
         viewModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable List<Movie> results) {
-               // viewModel.getAllMovies().removeObserver(this);
+               viewModel.getAllMovies().removeObserver(this);
                 adapter.setMovies(results);
-                //recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(adapter);
             }
         });
     }

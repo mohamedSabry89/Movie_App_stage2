@@ -13,16 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder> {
 
-    private List<Movie> movies;
+    private List<Movie> movies = new ArrayList<>();
     Context context;
 
     public MoviesRecyclerAdapter(Context context, List<Movie> movies) {
-        this.movies = movies;
         this.context = context;
+        this.movies = movies;
     }
 
     @NonNull
@@ -45,7 +46,6 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
             public void onClick(View view) {
                 Intent intent = new Intent(context, MovieActivity.class);
                 intent.putExtra("get_data", theMovie);
-                intent.putExtra("get_id", id);
                 context.startActivity(intent);
             }
         });
@@ -61,6 +61,7 @@ public class MoviesRecyclerAdapter extends RecyclerView.Adapter<MoviesRecyclerAd
 
     public void setMovies(List<Movie> movieEntries) {
         this.movies = movieEntries;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
