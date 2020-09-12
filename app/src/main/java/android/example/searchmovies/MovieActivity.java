@@ -24,6 +24,7 @@ import android.widget.ToggleButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -38,12 +39,14 @@ public class MovieActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     public ReviewAdapter adapter;
+    private RecyclerView.LayoutManager rvLayout;
+    public Review[] review;
+
     public Context context;
-    public List<Review> review;
     public getReviewUrl task;
 
     private static final int DEFAULT_POSITION = 0;
-    TextView tvTitle, tvOverview, tvDate, tvRate;
+    TextView tvTitle, tvOverview, tvDate, tvRate, tvReview, tvContent;
     ImageView imPoster;
     ToggleButton button;
     AppDatabase appDatabase;
@@ -60,6 +63,9 @@ public class MovieActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_review);
 
+        tvReview = findViewById(R.id.review_author);
+        tvContent = findViewById(R.id.review_content);
+
 
         tvTitle = findViewById(R.id.tv_title);
         tvOverview = findViewById(R.id.tv_overview);
@@ -70,7 +76,9 @@ public class MovieActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         movie = intent.getParcelableExtra("get_data");
-        id = intent.getIntExtra("get_id", id);
+
+        assert movie != null;
+        id = movie.getId();
 
         title = movie.getTitle();
         overView = movie.getOverview();
@@ -108,6 +116,7 @@ public class MovieActivity extends AppCompatActivity {
     public void addToFavourite() {
         AppExecutors.getInstance().diskIO().execute(() -> {
             appDatabase.movieDao().insert(movie);
+            Log.d("the movie ID added  " + id, "   good");
 
         });
     }
@@ -115,6 +124,7 @@ public class MovieActivity extends AppCompatActivity {
     public void deleteFromFavourite() {
         AppExecutors.getInstance().diskIO().execute(() -> {
             appDatabase.movieDao().delete(movie);
+            Log.d("the movie ID deleted  " + id, "   bad");
 
         });
     }
@@ -133,12 +143,13 @@ public class MovieActivity extends AppCompatActivity {
             }
             return urlSearchResult;
         }
-
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                review = Arrays.asList(ReviewJson.parseReviewJson(MovieActivity.this, s));
+                review = ReviewJson.parseReviewJson(MovieActivity.this, s);
+                rvLayout = new LinearLayoutManager(MovieActivity.this);
+                recyclerView.setLayoutManager(rvLayout);
                 adapter = new ReviewAdapter(MovieActivity.this, review);
                 recyclerView.setAdapter(adapter);
             } catch (Exception e) {

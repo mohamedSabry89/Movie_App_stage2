@@ -12,6 +12,7 @@ public class Movie implements Parcelable {
 
     @PrimaryKey
     private int id;
+
     private String poster;
     private String title;
     private String overview;

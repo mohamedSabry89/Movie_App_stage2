@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MoviesRecyclerAdapter(context, movie);
         recyclerView.setAdapter(adapter);
 
-        //setupViewModel();
-
     }
 
     @SuppressLint("StaticFieldLeak")

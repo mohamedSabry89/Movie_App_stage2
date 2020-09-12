@@ -16,9 +16,9 @@ import java.util.List;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
     private Context context;
-    private List<Review> reviewList = new ArrayList<>();
+    private Review[] reviewList;
 
-    public ReviewAdapter(Context context, List<Review> reviewList) {
+    public ReviewAdapter(Context context, Review[] reviewList) {
         this.context = context;
         this.reviewList = reviewList;
     }
@@ -36,7 +36,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ReviewAdapter.ViewHolder holder, int position) {
 
-        final Review review = reviewList.get(position);
+        final Review review = reviewList[position];
 
         TextView TextViewAuthor = holder.authorTextView.findViewById(R.id.review_author);
         TextView TextViewReview = holder.reviewTextView.findViewById(R.id.review_content);
@@ -51,7 +51,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         if (reviewList == null) {
             return 0;
         }
-        return reviewList.size();
+        return reviewList.length;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -13,7 +13,7 @@ public final class ReviewJson {
         final String RESULT = "results";
         final String AUTHOR = "author";
         final String CONTENT = "content";
-        final String ID = "movie_id";
+        final String ID = "id";
 
         JSONObject reviewJson = new JSONObject(json);
         JSONArray result = reviewJson.getJSONArray(RESULT);

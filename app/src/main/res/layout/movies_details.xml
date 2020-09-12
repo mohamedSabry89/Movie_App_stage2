@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,111 +8,91 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp">
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="135dp"
-            android:layout_height="200dp"
-            tools:ignore="ContentDescription" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:padding="8dp">
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/title"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="@string/date"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="135dp"
+                android:layout_height="200dp"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                tools:ignore="UseCompoundDrawables">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/tv_rate"
+                    android:id="@+id/tv_title"
+                    style="@style/TextSizeMediumAndBold"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/title" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/TextSizeMediumAndBold"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/date" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/rating"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="8dp">
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/web_hi_res_512"
-                    tools:ignore="ContentDescription" />
+                    <TextView
+                        android:id="@+id/tv_rate"
+                        style="@style/TextSizeMediumAndBold"
+                        android:text="@string/rating" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/web_hi_res_512"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
+
+                <ToggleButton
+                    android:id="@+id/favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="@string/favorite"
+                    android:textOff="@string/text_off"
+                    android:textOn="@string/text_on"
+                    android:textSize="10sp"
+                    tools:ignore="SmallSp" />
             </LinearLayout>
-
-            <ToggleButton
-                android:id="@+id/favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="@string/favorite"
-                android:textSize="10sp"
-                android:textOff="@string/text_off"
-                android:textOn="@string/text_on"
-                tools:ignore="SmallSp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_overview"
+            style="@style/TextSizeSmallAndBold"
+            android:layout_marginBottom="16dp"
+            android:text="@string/overview" />
+
+        <TextView
+
+            style="@style/TextSizeSmallAndBold"
+            android:layout_marginBottom="16dp"
+            android:text="@string/review" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_review"
+            style="@style/recyclerViewStyle" />
+
+        <TextView
+            style="@style/TextSizeSmallAndBold"
+            android:layout_marginBottom="16dp"
+            android:text="@string/trailer" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trailer"
+            style="@style/recyclerViewStyle" />
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_overview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/overview"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/review"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_review"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/trailer"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trailer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:orientation="vertical" />
-
-</LinearLayout>
+</ScrollView>

@@ -20,7 +20,7 @@ public final class  JsonUtils {
         final String OVERVIEW = "overview";
         final String VOTE_AVERAGE = "vote_average";
         final String RELEASE_DATE = "release_date";
-        final String ID = "movie_id";
+        final String ID = "id";
 
         JSONObject movieJson = new JSONObject(json);
         JSONArray result = movieJson.getJSONArray(RESULT);
