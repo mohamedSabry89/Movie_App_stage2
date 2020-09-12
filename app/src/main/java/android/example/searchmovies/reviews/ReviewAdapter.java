@@ -35,12 +35,14 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ReviewAdapter.ViewHolder holder, int position) {
-        final Review review = reviewList.get(position);
-        TextView TextViewReview = holder.reviewTextView.findViewById(R.id.review_content);
-        TextView TextViewAuthor = holder.authorTextView.findViewById(R.id.review_author);
 
-        TextViewReview.setText(review.getTheReview());
+        final Review review = reviewList.get(position);
+
+        TextView TextViewAuthor = holder.authorTextView.findViewById(R.id.review_author);
+        TextView TextViewReview = holder.reviewTextView.findViewById(R.id.review_content);
+
         TextViewAuthor.setText(review.getAuthor());
+        TextViewReview.setText(review.getTheReview());
 
     }
 
@@ -60,8 +62,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            reviewTextView = itemView.findViewById(R.id.review_content);
             authorTextView = itemView.findViewById(R.id.review_author);
+            reviewTextView = itemView.findViewById(R.id.review_content);
         }
     }
 }

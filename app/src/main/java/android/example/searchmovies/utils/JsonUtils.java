@@ -10,10 +10,10 @@ import org.json.JSONObject;
 
 
 public final class  JsonUtils {
+
     public static Movie[] parseMovieJson(Context context, String json) throws JSONException {
 
         final String IMG_URL = "https://image.tmdb.org/t/p/w185";
-
         final String RESULT = "results";
         final String TITLE = "title";
         final String POSTER = "poster_path";
@@ -24,7 +24,7 @@ public final class  JsonUtils {
 
         JSONObject movieJson = new JSONObject(json);
         JSONArray result = movieJson.getJSONArray(RESULT);
-        Movie[] movieResults = new Movie[result.length()];
+        Movie[] movieResults = new Movie[(result.length())];
 
         for (int i = 0; i < result.length(); i++) {
             String title, poster_path, overview, vote_average, release_date;

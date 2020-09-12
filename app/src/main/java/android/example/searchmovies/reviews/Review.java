@@ -15,6 +15,11 @@ public class Review {
         this.theReview = theReview;
     }
 
+    public Review(String author, String theReview) {
+        this.author = author;
+        this.theReview = theReview;
+    }
+
     public int getReviewId() {
         return reviewId;
     }

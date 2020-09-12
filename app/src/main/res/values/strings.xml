@@ -10,5 +10,7 @@
     <string name="overview">Overview</string>
     <string name="review">Reviews</string>
     <string name="trailer">Trailers</string>
+    <string name="text_off">Add to favourite</string>
+    <string name="text_on">Added</string>
 
 </resources>

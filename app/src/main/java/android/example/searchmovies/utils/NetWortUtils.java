@@ -16,6 +16,8 @@ public class NetWortUtils {
     final static String api_key = "";
     final static String PARAM_LANGUAGE = "language";
     final static String language = "en-US";
+    final static String REVIEW = "reviews";
+    final static String TRAILER = "";
 
     public static URL buildUrl(String movieSearchQuery) {
         Uri buildUri = Uri.parse(URL).buildUpon()
@@ -33,6 +35,25 @@ public class NetWortUtils {
 
         return url;
     }
+
+    public static URL reviewUrl(int id) {
+        Uri reviewUri = Uri.parse(URL).buildUpon()
+                .appendEncodedPath(String.valueOf(id))
+                .appendEncodedPath(REVIEW)
+                .appendQueryParameter(PARAM_API_KEY, api_key)
+                .appendQueryParameter(PARAM_LANGUAGE, language)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(reviewUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

@@ -63,12 +63,14 @@
                     tools:ignore="ContentDescription" />
             </LinearLayout>
 
-            <Button
+            <ToggleButton
                 android:id="@+id/favorite"
-                android:layout_width="80dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="@string/favorite"
                 android:textSize="10sp"
+                android:textOff="@string/text_off"
+                android:textOn="@string/text_on"
                 tools:ignore="SmallSp" />
         </LinearLayout>
     </LinearLayout>
