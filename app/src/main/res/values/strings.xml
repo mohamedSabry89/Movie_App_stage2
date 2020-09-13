@@ -12,5 +12,7 @@
     <string name="trailer">Trailers</string>
     <string name="text_off">Add to favourite</string>
     <string name="text_on">Added</string>
+    <string name="movie_video">Link to movie trailer</string>
+
 
 </resources>
