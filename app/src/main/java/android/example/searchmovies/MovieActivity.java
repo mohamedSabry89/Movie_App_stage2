@@ -9,6 +9,9 @@ import android.example.searchmovies.database.Movie;
 import android.example.searchmovies.reviews.Review;
 import android.example.searchmovies.reviews.ReviewAdapter;
 import android.example.searchmovies.reviews.ReviewJson;
+import android.example.searchmovies.trailers.Trailer;
+import android.example.searchmovies.trailers.TrailerAdapter;
+import android.example.searchmovies.trailers.TrailerJson;
 import android.example.searchmovies.utils.JsonUtils;
 import android.example.searchmovies.utils.NetWortUtils;
 import android.os.AsyncTask;
@@ -38,12 +41,19 @@ import java.util.List;
 public class MovieActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    public ReviewAdapter adapter;
+    private RecyclerView recyclerView2;
+
     private RecyclerView.LayoutManager rvLayout;
+
+    public ReviewAdapter reviewAdapter;
     public Review[] review;
+
+    public TrailerAdapter trailerAdapter;
+    public Trailer[] trailers;
 
     public Context context;
     public getReviewUrl task;
+    public getTrailerUrl trailerTask;
 
     private static final int DEFAULT_POSITION = 0;
     TextView tvTitle, tvOverview, tvDate, tvRate, tvReview, tvContent;
@@ -62,6 +72,7 @@ public class MovieActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(getApplicationContext());
 
         recyclerView = findViewById(R.id.recycler_review);
+        recyclerView2 = findViewById(R.id.trailer);
 
         tvReview = findViewById(R.id.review_author);
         tvContent = findViewById(R.id.review_content);
@@ -89,6 +100,9 @@ public class MovieActivity extends AppCompatActivity {
 
         task = new getReviewUrl();
         task.execute();
+
+        trailerTask = new getTrailerUrl();
+        trailerTask.execute();
 
         Picasso.get().load(moviePoster).fit().centerInside().into(imPoster);
         tvTitle.setText(title);
@@ -143,6 +157,7 @@ public class MovieActivity extends AppCompatActivity {
             }
             return urlSearchResult;
         }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -150,12 +165,42 @@ public class MovieActivity extends AppCompatActivity {
                 review = ReviewJson.parseReviewJson(MovieActivity.this, s);
                 rvLayout = new LinearLayoutManager(MovieActivity.this);
                 recyclerView.setLayoutManager(rvLayout);
-                adapter = new ReviewAdapter(MovieActivity.this, review);
-                recyclerView.setAdapter(adapter);
+                reviewAdapter = new ReviewAdapter(MovieActivity.this, review);
+                recyclerView.setAdapter(reviewAdapter);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+    public class getTrailerUrl extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String urlSearchResult = null;
+            try {
+                URL searchUrl = NetWortUtils.trailerUrl(id);
+                urlSearchResult = NetWortUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return urlSearchResult;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                trailers = TrailerJson.parseReviewJson(MovieActivity.this, s);
+                rvLayout = new LinearLayoutManager(MovieActivity.this);
+                recyclerView2.setLayoutManager(rvLayout);
+                trailerAdapter = new TrailerAdapter(MovieActivity.this, trailers);
+                recyclerView2.setAdapter(trailerAdapter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }

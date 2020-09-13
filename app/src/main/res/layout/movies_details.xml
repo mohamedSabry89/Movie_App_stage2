@@ -72,9 +72,20 @@
 
         <TextView
             android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/overview"
+            android:textSize="18sp" />
+
+        <TextView
             style="@style/TextSizeLargeAndBold"
             android:layout_marginBottom="16dp"
-            android:text="@string/overview" />
+            android:text="@string/trailer" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/trailer"
+            style="@style/recyclerViewStyle" />
 
         <TextView
 
@@ -86,13 +97,6 @@
             android:id="@+id/recycler_review"
             style="@style/recyclerViewStyle" />
 
-        <TextView
-            style="@style/TextSizeLargeAndBold"
-            android:layout_marginBottom="16dp"
-            android:text="@string/trailer" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trailer"
-            style="@style/recyclerViewStyle" />
     </LinearLayout>
 </ScrollView>

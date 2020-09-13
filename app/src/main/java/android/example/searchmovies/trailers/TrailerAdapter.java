@@ -1,7 +1,10 @@
 package android.example.searchmovies.trailers;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.example.searchmovies.R;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +35,27 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull TrailerAdapter.ViewHolder holder, int position) {
+
         final Trailer trailer = trailerList[position];
 
         TextView tvTrailer = holder.trailerTextView.findViewById(R.id.link_trailer);
-
         tvTrailer.setText(trailer.getVideoName());
+
+        String key = trailer.getVideoKey();
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + key));
+                Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + key));
+                try {
+                    context.startActivity(appIntent);
+                } catch (ActivityNotFoundException ex) {
+                    context.startActivity(webIntent);
+                }
+
+            }
+        });
 
     }
 

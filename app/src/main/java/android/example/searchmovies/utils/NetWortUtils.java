@@ -19,7 +19,7 @@ public class NetWortUtils {
     final static String REVIEW = "reviews";
     final static String TRAILER = "videos";
 
-    
+
     public static URL buildUrl(String movieSearchQuery) {
         Uri buildUri = Uri.parse(URL).buildUpon()
                 .appendEncodedPath(movieSearchQuery)
