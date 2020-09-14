@@ -21,10 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-<<<<<<< HEAD
-=======
 import android.widget.ScrollView;
->>>>>>> 2929748... after updating xml
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -59,11 +56,8 @@ public class MovieActivity extends AppCompatActivity {
     public getReviewUrl task;
     public getTrailerUrl trailerTask;
 
-<<<<<<< HEAD
-=======
     ScrollView scrollView;
 
->>>>>>> 2929748... after updating xml
     private static final int DEFAULT_POSITION = 0;
     TextView tvTitle, tvOverview, tvDate, tvRate, tvReview, tvContent;
     ImageView imPoster;
@@ -76,13 +70,10 @@ public class MovieActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
         setContentView(R.layout.movies_details);
-=======
         setContentView(R.layout.movies_datails);
 
         scrollView = (ScrollView) findViewById(R.id.scrollView);
->>>>>>> 2929748... after updating xml
 
         appDatabase = AppDatabase.getInstance(getApplicationContext());
 
@@ -92,10 +83,6 @@ public class MovieActivity extends AppCompatActivity {
         tvReview = findViewById(R.id.review_author);
         tvContent = findViewById(R.id.review_content);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2929748... after updating xml
         tvTitle = findViewById(R.id.tv_title);
         tvOverview = findViewById(R.id.tv_overview);
         tvDate = findViewById(R.id.tv_date);

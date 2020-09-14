@@ -19,10 +19,6 @@ public class NetWortUtils {
     final static String REVIEW = "reviews";
     final static String TRAILER = "videos";
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2929748... after updating xml
     public static URL buildUrl(String movieSearchQuery) {
         Uri buildUri = Uri.parse(URL).buildUpon()
                 .appendEncodedPath(movieSearchQuery)
@@ -77,12 +73,7 @@ public class NetWortUtils {
         return url;
     }
 
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> 2929748... after updating xml
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
