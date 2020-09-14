@@ -21,12 +21,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,9 +57,9 @@ public class MovieActivity extends AppCompatActivity {
     public getReviewUrl task;
     public getTrailerUrl trailerTask;
 
-    ScrollView scrollView;
+    // Constant for default task id to be used when not in favourite
+    private static final int DEFAULT_TASK_ID = -1;
 
-    private static final int DEFAULT_POSITION = 0;
     TextView tvTitle, tvOverview, tvDate, tvRate, tvReview, tvContent;
     ImageView imPoster;
     ToggleButton button;
@@ -71,9 +72,6 @@ public class MovieActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movies_details);
-        setContentView(R.layout.movies_datails);
-
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
 
         appDatabase = AppDatabase.getInstance(getApplicationContext());
 
@@ -92,9 +90,6 @@ public class MovieActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         movie = intent.getParcelableExtra("get_data");
-
-        assert movie != null;
-        id = movie.getId();
 
         title = movie.getTitle();
         overView = movie.getOverview();
@@ -115,6 +110,21 @@ public class MovieActivity extends AppCompatActivity {
         tvRate.setText(rate);
         tvOverview.setText(overView);
 
+        checkFavorite();
+
+        if (id != DEFAULT_TASK_ID) {
+            AddTaskViewModelFactory factory = new AddTaskViewModelFactory(appDatabase, id);
+            final AddTaskViewModel viewModel = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
+            viewModel.getTask().observe(this, new Observer<Movie>() {
+                @Override
+                public void onChanged(Movie movie) {
+                    viewModel.getTask().removeObserver(this);
+                    button.setTextOn("Added");
+                    button.getResources().getColor(R.color.colorGreen);
+                }
+            });
+        }
+
         button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -131,12 +141,16 @@ public class MovieActivity extends AppCompatActivity {
 
     }
 
+  /*  private void populateUI(Movie movie) {
+        if (movie == null) {
+            return;
+        }
+    }*/
 
     public void addToFavourite() {
         AppExecutors.getInstance().diskIO().execute(() -> {
             appDatabase.movieDao().insert(movie);
             Log.d("the movie ID added  " + id, "   good");
-
         });
     }
 
@@ -207,5 +221,17 @@ public class MovieActivity extends AppCompatActivity {
         }
     }
 
+    public void checkFavorite() {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+
+            appDatabase.movieDao().getAllMovies(id);
+
+            if (appDatabase.movieDao().check(id) != 0) {
+                button.setTextOn("Added");
+                button.getResources().getColor(R.color.colorGreen);
+            }
+            Log.d("the movie ID deleted  " + id, "   bad");
+        });
+    }
 
 }

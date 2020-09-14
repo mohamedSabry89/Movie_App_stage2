@@ -19,6 +19,7 @@ public class NetWortUtils {
     final static String REVIEW = "reviews";
     final static String TRAILER = "videos";
 
+
     public static URL buildUrl(String movieSearchQuery) {
         Uri buildUri = Uri.parse(URL).buildUpon()
                 .appendEncodedPath(movieSearchQuery)
@@ -72,6 +73,8 @@ public class NetWortUtils {
 
         return url;
     }
+
+
 
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {

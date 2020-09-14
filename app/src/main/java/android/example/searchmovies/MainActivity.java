@@ -2,9 +2,7 @@ package android.example.searchmovies;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,9 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public Context context;
     public MovieQueryTask task;
     public String sortBy = "popular";
-    //public LiveData<List<Movie>> listmovie;
 
-    private ViewModel viewModel;
     private AppDatabase appDatabase;
 
     @Override
@@ -121,40 +117,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-  /*  public void setupViewModel() {
-        viewModel = ViewModelProviders.of(this).get(ViewModel.class);
-        viewModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
-            @Override
-            public void onChanged(List<Movie> movies) {
-                adapter.notifyDataSetChanged();
-            }
-        });
-    }*/
-
-  /*  public void getFavorites() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                listmovie = appDatabase.movieDao().getAllMovies();
-                adapter.setMovies(movie);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-            }
-        });
-    }*/
-
     public void getFavorites() {
-        viewModel = new ViewModelProvider(this).get(ViewModel.class);
+        ViewModel viewModel = ViewModelProviders.of(this).get(ViewModel.class);
         viewModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
             @Override
             public void onChanged(@Nullable List<Movie> results) {
-               viewModel.getAllMovies().removeObserver(this);
                 adapter.setMovies(results);
-                recyclerView.setAdapter(adapter);
             }
         });
     }
