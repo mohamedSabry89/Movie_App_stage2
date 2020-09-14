@@ -54,4 +54,10 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:2.2.0"
     //noinspection LifecycleAnnotationProcessorWithJava8
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0"
+<<<<<<< HEAD
+=======
+
+    implementation 'com.android.support.constraint:constraint-layout:2.0.1'
+
+>>>>>>> 2929748... after updating xml
 }
