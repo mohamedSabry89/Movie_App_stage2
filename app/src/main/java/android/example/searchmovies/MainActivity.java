@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,12 +36,14 @@ public class MainActivity extends AppCompatActivity {
     public List<Movie> movie = new ArrayList();
     private RecyclerView recyclerView;
     public MoviesRecyclerAdapter adapter;
-    private RecyclerView.LayoutManager rvLayout, mListState;
+    private RecyclerView.LayoutManager rvLayout;
     public ImageView imageView;
     public Context context;
     public MovieQueryTask task;
     public String sortBy = "popular";
-    private Parcelable mSavedState;
+
+    public final static String LIST_STATE_KEY = "recycler_list_state";
+    private Parcelable listState;
 
     private AppDatabase appDatabase;
 
@@ -61,16 +64,33 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MoviesRecyclerAdapter(context, movie);
         recyclerView.setAdapter(adapter);
 
-        if (savedInstanceState != null) {
-            Parcelable savedState = savedInstanceState.getParcelable("KEY_INSTANCE_STATE_RV_POSITION");
-            adapter.setMovies((List<Movie>) savedState);
-        }
     }
+
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("KEY_INSTANCE_STATE_RV_POSITION", Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState());
+        listState = rvLayout.onSaveInstanceState();
+        outState.putParcelable(LIST_STATE_KEY, listState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        // Retrieve list state and list/item positions
+        if (state != null)
+            listState = state.getParcelable(LIST_STATE_KEY);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (listState != null) {
+            rvLayout.onRestoreInstanceState(listState);
+            recyclerView.setLayoutManager(rvLayout);
+            adapter = new MoviesRecyclerAdapter(context, movie);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
