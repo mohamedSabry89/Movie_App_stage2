@@ -26,7 +26,9 @@ import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -67,6 +69,7 @@ public class MovieActivity extends AppCompatActivity {
     Movie movie;
     String moviePoster, title, overView, rate, date;
     int id;
+    public Boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +93,14 @@ public class MovieActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         movie = intent.getParcelableExtra("get_data");
+        id = intent.getIntExtra("get_id", DEFAULT_TASK_ID);
 
         title = movie.getTitle();
         overView = movie.getOverview();
         date = movie.getDate();
         rate = movie.getAverage();
         moviePoster = movie.getPoster();
-        id = movie.getId();
+        // id = movie.getId();
 
         task = new getReviewUrl();
         task.execute();
@@ -109,10 +113,10 @@ public class MovieActivity extends AppCompatActivity {
         tvDate.setText(date);
         tvRate.setText(rate);
         tvOverview.setText(overView);
+        isFavorite();
+        // checkFavorite();
 
-        checkFavorite();
-
-        if (id != DEFAULT_TASK_ID) {
+       /* if (id != DEFAULT_TASK_ID) {
             AddTaskViewModelFactory factory = new AddTaskViewModelFactory(appDatabase, id);
             final AddTaskViewModel viewModel = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
             viewModel.getTask().observe(this, new Observer<Movie>() {
@@ -123,7 +127,7 @@ public class MovieActivity extends AppCompatActivity {
                     button.getResources().getColor(R.color.colorGreen);
                 }
             });
-        }
+        }*/
 
         button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -141,16 +145,12 @@ public class MovieActivity extends AppCompatActivity {
 
     }
 
-  /*  private void populateUI(Movie movie) {
-        if (movie == null) {
-            return;
-        }
-    }*/
-
     public void addToFavourite() {
         AppExecutors.getInstance().diskIO().execute(() -> {
-            appDatabase.movieDao().insert(movie);
-            Log.d("the movie ID added  " + id, "   good");
+            if (!isFavorite) {
+                appDatabase.movieDao().insert(movie);
+                Log.d("the movie ID added  " + id, "   good");
+            }
         });
     }
 
@@ -221,7 +221,7 @@ public class MovieActivity extends AppCompatActivity {
         }
     }
 
-    public void checkFavorite() {
+    /* public void checkFavorite() {
         AppExecutors.getInstance().diskIO().execute(() -> {
 
             appDatabase.movieDao().getAllMovies(id);
@@ -231,6 +231,28 @@ public class MovieActivity extends AppCompatActivity {
                 button.getResources().getColor(R.color.colorGreen);
             }
             Log.d("the movie ID deleted  " + id, "   bad");
+        });
+    } */
+
+    public void isFavorite() {
+        AddTaskViewModelFactory factory = new AddTaskViewModelFactory(appDatabase, id);
+        final AddTaskViewModel viewModel = ViewModelProviders.of(this, factory).get(AddTaskViewModel.class);
+        LiveData<Movie> favorites = viewModel.getTask();
+        favorites.observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(Movie result) {
+                favorites.removeObserver(this);
+                if (result == null) {
+                    isFavorite = false;
+                    button.setChecked(false);
+                } else if (movie.getId() == result.getId() && !button.isChecked()) {
+                    isFavorite = true;
+                    button.setChecked(true);
+                } else {
+                    isFavorite = true;
+                    button.setChecked(true);
+                }
+            }
         });
     }
 
