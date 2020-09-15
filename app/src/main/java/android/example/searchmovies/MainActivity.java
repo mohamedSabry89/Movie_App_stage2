@@ -1,5 +1,6 @@
 package android.example.searchmovies;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -16,6 +17,7 @@ import android.example.searchmovies.utils.JsonUtils;
 import android.example.searchmovies.utils.NetWortUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -26,17 +28,19 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     public List<Movie> movie = new ArrayList();
     private RecyclerView recyclerView;
     public MoviesRecyclerAdapter adapter;
-    private RecyclerView.LayoutManager rvLayout;
+    private RecyclerView.LayoutManager rvLayout, mListState;
     public ImageView imageView;
     public Context context;
     public MovieQueryTask task;
     public String sortBy = "popular";
+    private Parcelable mSavedState;
 
     private AppDatabase appDatabase;
 
@@ -57,6 +61,16 @@ public class MainActivity extends AppCompatActivity {
         adapter = new MoviesRecyclerAdapter(context, movie);
         recyclerView.setAdapter(adapter);
 
+        if (savedInstanceState != null) {
+            Parcelable savedState = savedInstanceState.getParcelable("KEY_INSTANCE_STATE_RV_POSITION");
+            adapter.setMovies((List<Movie>) savedState);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("KEY_INSTANCE_STATE_RV_POSITION", Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState());
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -111,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             task = new MovieQueryTask();
             task.execute(sortBy);
             Toast.makeText(this, "Searching By Best Rating", Toast.LENGTH_SHORT).show();
-        } else if (itemSelected == R.id.favorite){
+        } else if (itemSelected == R.id.favorite) {
             getFavorites();
         }
         return super.onOptionsItemSelected(item);
